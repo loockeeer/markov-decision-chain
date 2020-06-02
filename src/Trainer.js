@@ -38,15 +38,12 @@ module.exports = class Trainer extends EventEmitter {
         const dc = new MarkovDecisionChain({
             by: this.by
         })
+        dc.on('log', p=>this.emit('log', p))
         
         // Get all the data
         const data = await this.loadData()
-
         // Loop on data intents
-        for(const [i, x] of data.entries()) {
-            dc.train(x)
-            this.emit('log', i*100/data.length)
-        }
+        dc.trainAll(data)
     }
 }
 
