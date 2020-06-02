@@ -30,6 +30,13 @@ module.exports = yargs
             default: 'word',
             required: false
         })
+        .option('dictionnaryFile', {
+            alias: 'dict',
+            description: 'The file for the dictionnary',
+            type: 'string',
+            default: './dictionnary',
+            required: false
+        })
         .choices('by', ['word', 'character'])
     })
     // Running command / options
@@ -52,6 +59,12 @@ module.exports = yargs
         .option('text', {
             alias: 't',
             description: 'The text you pass in your markov decision chain. Cannot be used in interactive mode.',
+            required: false
+        })
+        .option('dictionnaryFile', {
+            alias: 'dict',
+            description: 'The dictionnary file',
+            default: './dictionnary',
             required: false
         })
     })
