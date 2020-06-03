@@ -10,4 +10,4 @@ Then start it with `npm run markov help`
 
 ## Exemples
 
-TODO (Create an issue if you want them faster)
+TODO (Make an issue if you want them faster)
