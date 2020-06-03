@@ -1,6 +1,7 @@
 const EventEmitter = require('events')
 const {fs = promises} = require('fs')
 const ngramSplit = require('./tools/ngramSplit.js')
+const random = require('./tools/chooseRandom.js')
 
 module.exports = class MarkovDecisionChain extends EventEmitter {
     constructor(modelData) {
@@ -22,6 +23,7 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
     train(x) {
         // Split data into ngrams
         const prepared = [...ngramSplit(x, this.model.ngrams), 'EOI_END_OF_INTENT']
+        prepared[0] = "START"+prepared[0]
         // Loop on ngrams to generate the model
         for(const [i, ngram] of prepared.entries()) {
             // Check if it is not the end of intent
@@ -52,9 +54,19 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
     }
     run(length, x) {
         if(!x) {
-            let text = '';
-            for(let i = 0;i<length;i++) {
+            let currentNgram = random(this.model.model.filter(ngram=>{
+                ngram.value.startsWith('START')
+            }))
+            let text = currentNgram.value.replace('START', '');
+            for(let i = 0;i<length-this.model.ngrams;i++) {
                 // Generate one char after ngram and update current ngram, if end, then return
+                const nextCharacter = random(currentNgram.after)
+                if(nextCharacter === "EOI_END_OF_INTENT") {
+                    return text
+                } else {
+                    text += nextCharacter
+                    currentNgram = this.model.model.find(ngram=>ngram.value===text.substring(i, i+this.model.ngrams))
+                }
             }
             return text
         } else {
