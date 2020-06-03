@@ -1,5 +1,5 @@
 const EventEmitter = require('events')
-const {fs = promises} = require('fs')
+const fs = require('fs').promises
 const ngramSplit = require('./tools/ngramSplit.js')
 const random = require('./tools/chooseRandom.js')
 
@@ -47,7 +47,7 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         await fs.writeFile(filename, JSON.stringify(this.model))
         return this
     }
-    async static load(filename) {
+    static async load(filename) {
         // Read model data and return new MarkovDecisionChain(model)
         const model_data = JSON.parse(await fs.readFile(filename))
         return new MarkovDecisionChain(model_data)
