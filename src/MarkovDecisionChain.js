@@ -1,52 +1,31 @@
 const EventEmitter = require('events')
+const {fs = promises} = require('fs')
 
 module.exports = class MarkovDecisionChain extends EventEmitter {
     constructor(modelData) {
-        // ModelData has 'by' key with 'word' or 'character'
         this.model = modelData
-        this._dictionnary = []
+        /*
+        {
+            ngrams: 3,
+            model: []
+        }
+        */
     }
     train(x) {
-
+        // Train the model
     }
-    save(file) {
-
+    async save(filename) {
+        // Save model to file
+        await fs.writeFile(filename, null,  JSON.stringify(this.model))
+        return this
     }
-    static load(file) {
+    async static load(filename) {
         // Read model data and return new MarkovDecisionChain(model)
+        const model_data = JSON.parse(await fs.readFile(filename))
+        return new MarkovDecisionChain(model_data)
     }
     prepareX(x, dict) {
-        if(this.model.by === 'word') {
-            const splitted = x.split(/\W/)
-            return splitted.map(s=>{
-                if(!dict.find(x=>x.value===s)) {
-                    return -1
-                }
-            })
-        } else if (this.model.by === 'character') {
-            return x.split(/./)
-        }
-    }
-    generateDictionnary(data) {
-        // Generate Dictionnary
-        this.emit('log', 'Generating Dictionnary')
-        if(this.model.by === 'word') {
-            const dictionnary = [...new Set(data.map(x=>x.split(/\W/)))].map((x,i)=>({
-                index: i,
-                value: x
-            }))
-        } else if(this.model.by === 'character') {
-            const dictionnary = Array(256)
-                                .fill(256)
-                                .map((x, y) => String.fromCharCode(x + y))
-                                .map((x,i)=>({
-                                    index: i,
-                                    value: x
-                                }))
-        }
-        this._dictionnary = dictionnary
-        this.emit('log', 'Dictionnary Generated')
-        return dictionnary
+        // Split all ngrams
     }
     runAll(data) {
         const dictionnary = this.generateDictionnary(data)
