@@ -1,5 +1,6 @@
 const EventEmitter = require('events')
 const {fs = promises} = require('fs')
+const ngramSplit = require('./tools/ngramSplit.js')
 
 module.exports = class MarkovDecisionChain extends EventEmitter {
     constructor(modelData) {
@@ -19,11 +20,29 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         this.emit('log', 'Done')
     }
     train(x) {
-        // Train the model
+        // Split data into ngrams
+        const prepared = [...ngramSplit(x, this.model.ngrams), 'EOI_END_OF_INTENT']
+        // Loop on ngrams to generate the model
+        for(const [i, ngram] of prepared.entries()) {
+            // Check if it is not the end of intent
+            if(ngram !== "EOI_END_OF_INTENT") {
+                // Update ngram in the model
+                const modelNgram = this.model.model.find(n=>n.value === x)
+                if(modelNgram) {
+                    modelNgram.after.push(prepared[i+1])
+                } else {
+                    // Create ngram in the model
+                    this.model.model.push({
+                        value: x,
+                        after: [prepared[i+1]]
+                    })
+                }
+            }
+        }
     }
     async save(filename) {
         // Save model to file
-        await fs.writeFile(filename, null,  JSON.stringify(this.model))
+        await fs.writeFile(filename, JSON.stringify(this.model))
         return this
     }
     async static load(filename) {
