@@ -2,6 +2,7 @@ const argv = require('./tools/argv.js')
 
 const Trainer = require('./Trainer.js')
 const Runner = require('./Runner.js')
+const MarkovDecisionChain = require('./MarkovDecisionChain.js')
 
 function main() {
     if(argv._.includes('train')) {
@@ -27,7 +28,9 @@ function main() {
             })
         })
     } else if (argv._.includes('run')) {
-        console.log('TODO')
+        MarkovDecisionChain.load(argv.modelFile).then(instance=>{
+            console.log(instance.run(argv.length))
+        })
     }
 }
 

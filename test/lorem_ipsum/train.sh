@@ -1,0 +1,1 @@
+node ../../src/index.js train --trainingFile training.data --outputFile model.model

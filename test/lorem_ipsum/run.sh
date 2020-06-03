@@ -1,1 +1,1 @@
-node ../../src/index.js train --trainingFile training.data --outputFile model.model
+node ../../src/index.js run --modelFile model.model --length 150
