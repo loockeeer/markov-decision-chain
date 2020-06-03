@@ -24,17 +24,18 @@ module.exports = yargs
             default: './model',
             required: false
         })
-        .option('by', {
-            description: 'Use a word dictionnary or a character dictionnary.',
-            type: 'string',
-            default: 'word',
-            required: false
-        })
         .option('ngrams', {
             alias: 'ng',
             description: 'The number of ngrams you want to use.',
             type: 'number',
             default: 3,
+            required: false
+        })
+        .option('endCharacter', {
+            alias: 'e',
+            description: 'The character which marks the end of an intent. "null" if you don\'t want one.',
+            type: 'script',
+            default: 'null',
             required: false
         })
     })
@@ -60,10 +61,11 @@ module.exports = yargs
             description: 'The text you pass in your markov decision chain. Cannot be used in interactive mode.',
             required: false
         })
-        .option('dictionnaryFile', {
-            alias: 'dict',
-            description: 'The dictionnary file',
-            default: './dictionnary',
+        .option('length', {
+            alias: 'l',
+            description: 'The max length in ngram you want your generated text to be.',
+            default: 50,
+            type: 'number',
             required: false
         })
     })
