@@ -56,7 +56,7 @@ module.exports = yargs
         })
         .option('length', {
             alias: 'l',
-            description: 'The max length in ngram you want your generated text to be.',
+            description: 'The max length in chars you want your generated text to be.',
             default: 50,
             type: 'number',
             required: false
