@@ -11,8 +11,8 @@ function main() {
             trainingFile: argv.trainingFile,
             ngrams: argv.ngrams
         })
-        .on('log', percent=>{
-            console.log(`Training : ${percent}%`)
+        .on('log', log=>{
+            console.log(`Training : ${log}`)
         })
         .on('end', ()=>{
             console.log('Training done.')

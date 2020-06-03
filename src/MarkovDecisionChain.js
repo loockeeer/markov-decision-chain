@@ -17,7 +17,7 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
     trainAll(data) {
         for (const [i, x] of data.entries()) {
             this.train(x)
-            this.emit('log', i * 100 / data.length)
+            this.emit('log', Math.floor(i * 100 / data.length)+"%")
         }
         this.emit('log', 'Done')
     }
