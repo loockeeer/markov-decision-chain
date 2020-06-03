@@ -5,13 +5,12 @@ const Runner = require('./Runner.js')
 
 function main() {
     if(argv._.includes('train')) {
-        const trainer = new Trainer({
+        new Trainer({
             separator: argv.separator,
             outputFile: argv.outputFile,
             trainingFile: argv.trainingFile,
-            by: argv.by
+            ngrams: argv.ngrams
         })
-        trainer
         .on('log', percent=>{
             console.log(`Training : ${percent}%`)
         })
@@ -19,6 +18,14 @@ function main() {
             console.log('Training done.')
         })
         .train()
+        .then(instance=>{
+            instance
+            .save()
+            .then(_=>{
+                console.log('Model saved.')
+                process.exit(0)
+            })
+        })
     } else if (argv._.includes('run')) {
         console.log('Running')
     }
