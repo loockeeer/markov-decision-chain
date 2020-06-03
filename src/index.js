@@ -27,7 +27,7 @@ function main() {
             })
         })
     } else if (argv._.includes('run')) {
-        console.log('Running')
+        console.log('TODO')
     }
 }
 
