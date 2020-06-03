@@ -7,7 +7,7 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         /*
         {
             ngrams: 3,
-            model: []
+            model: [{value: 'tri', after: ['x', 'y', 'z', 'z', 'z']}]
         }
         */
     }
@@ -28,7 +28,6 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         // Split all ngrams
     }
     runAll(data) {
-        const dictionnary = this.generateDictionnary(data)
         for(const [i, x] of data.entries()) {
             this.run(x)
             this.emit('log', i*100/data.length)
