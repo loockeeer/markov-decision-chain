@@ -11,6 +11,13 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         }
         */
     }
+    trainAll(data) {
+        for(const [i, x] of data.entries()) {
+            this.train(x)
+            this.emit('log', i*100/data.length)
+        }
+        this.emit('log', 'Done')
+    }
     train(x) {
         // Train the model
     }
@@ -24,19 +31,15 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
         const model_data = JSON.parse(await fs.readFile(filename))
         return new MarkovDecisionChain(model_data)
     }
-    prepareX(x, dict) {
-        // Split all ngrams
-    }
-    runAll(data) {
-        for(const [i, x] of data.entries()) {
-            this.run(x)
-            this.emit('log', i*100/data.length)
+    run(length, x) {
+        if(!x) {
+            let text = '';
+            for(let i = 0;i<length;i++) {
+                // Generate one char after ngram and update current ngram, if end, then return
+            }
+            return text
+        } else {
+            // TODO
         }
-        this.emit('log', 'Done')
-    }
-    run(x) {
-        const prepared = this.prepareX(x)
-
-        // Run the Model
     }
 }
