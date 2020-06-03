@@ -31,13 +31,6 @@ module.exports = yargs
             default: 3,
             required: false
         })
-        .option('endCharacter', {
-            alias: 'e',
-            description: 'The character which marks the end of an intent. "null" if you don\'t want one.',
-            type: 'script',
-            default: 'null',
-            required: false
-        })
     })
     // Running command / options
     .command('run', 'Run your markov decision chain on your model', args=>{
