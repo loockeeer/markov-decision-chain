@@ -7,16 +7,23 @@ module.exports = class Trainer extends EventEmitter {
         outputFile,
         trainingFile,
         ngrams}) {
+            super()
             this.separator = separator
             this.outputFile = outputFile
             this.trainingFile = trainingFile
             this.ngrams = ngrams
+
+            const dc = new MarkovDecisionChain({
+                ngrams: this.ngrams,
+                model: []
+            })
+            this.dc = dc
     }
     readData() {
         return new Promise((res, rej)=>{
             // Read data
-            const rawData = ''
-            fs.createReadStream(this.outputFile)
+            let rawData = ''
+            fs.createReadStream(this.trainingFile)
             .on('data', (chunk) => {
                 rawData += chunk.toString()
             })
@@ -34,16 +41,18 @@ module.exports = class Trainer extends EventEmitter {
         // Split by separator
         return rawData.split(this.separator)
     }
+    save() {
+        return this.dc.save(this.outputFile)
+    }
     async train() {
-        const dc = new MarkovDecisionChain({
-            ngrams: this.ngrams
-        })
-        dc.on('log', p=>this.emit('log', p))
+
+        this.dc.on('log', p=>this.emit('log', p))
         
         // Get all the data
         const data = await this.loadData()
         // Loop on data intents
-        dc.trainAll(data)
+        this.dc.trainAll(data)
+        return this
     }
 }
 
