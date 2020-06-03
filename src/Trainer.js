@@ -6,11 +6,11 @@ module.exports = class Trainer extends EventEmitter {
     constructor({separator,
         outputFile,
         trainingFile,
-        by}) {
+        ngrams}) {
             this.separator = separator
             this.outputFile = outputFile
             this.trainingFile = trainingFile
-            this.by = by
+            this.ngrams = ngrams
     }
     readData() {
         return new Promise((res, rej)=>{
@@ -36,7 +36,7 @@ module.exports = class Trainer extends EventEmitter {
     }
     async train() {
         const dc = new MarkovDecisionChain({
-            by: this.by
+            ngrams: this.ngrams
         })
         dc.on('log', p=>this.emit('log', p))
         
