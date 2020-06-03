@@ -30,14 +30,13 @@ module.exports = yargs
             default: 'word',
             required: false
         })
-        .option('dictionnaryFile', {
-            alias: 'dict',
-            description: 'The file for the dictionnary',
-            type: 'string',
-            default: './dictionnary',
+        .option('ngrams', {
+            alias: 'ng',
+            description: 'The number of ngrams you want to use.',
+            type: 'number',
+            default: 3,
             required: false
         })
-        .choices('by', ['word', 'character'])
     })
     // Running command / options
     .command('run', 'Run your markov decision chain on your model', args=>{
