@@ -16,17 +16,17 @@ module.exports = class MarkovDecisionChain extends EventEmitter {
     }
     trainAll(data) {
         for (const [i, x] of data.entries()) {
-            this.train(x)
-            this.emit('log', Math.floor(i * 100 / data.length)+"%")
+            this.train(x, data.length)
         }
         this.emit('log', 'Done')
     }
-    train(x) {
+    train(x,count) {
         // Split data into ngrams
         const prepared = ngramSplit(x, this.model.ngrams)
         prepared[0] = "START" + prepared[0]
         // Loop on ngrams to generate the model
         for (const [i, ngram] of prepared.entries()) {
+            this.emit('log', Math.floor(i * 100 / prepared.length / count)+"%")
             // Check if it is not the end of intent
             // Update ngram in the model
             if (i + 1 !== prepared.length) {

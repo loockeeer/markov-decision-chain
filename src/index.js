@@ -3,6 +3,7 @@ const argv = require('./tools/argv.js')
 const Trainer = require('./Trainer.js')
 const Runner = require('./Runner.js')
 const MarkovDecisionChain = require('./MarkovDecisionChain.js')
+const writeState = require('./tools/writeState.js')
 
 function main() {
     if(argv._.includes('train')) {
@@ -13,10 +14,7 @@ function main() {
             ngrams: argv.ngrams
         })
         .on('log', log=>{
-            console.log(`Training : ${log}`)
-        })
-        .on('end', ()=>{
-            console.log('Training done.')
+            writeState(log)
         })
         .train()
         .then(instance=>{
